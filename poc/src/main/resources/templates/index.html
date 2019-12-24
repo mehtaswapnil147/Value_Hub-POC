@@ -1,0 +1,47 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<script type="text/javascript" th:src="@{/jslibs/jquery-min.js/}"></script>
+<script type="text/javascript" th:src="@{/jslibs/marked.min.js}"></script>
+</head>
+<body>
+	<div th:if="${message}">
+	<h2 th:text="${message}" />
+	</div>
+	<div>
+		<form method="POST" enctype="multipart/form-data" action="/upload">
+			<table>
+				<tr>
+					<td>File to upload:</td>
+					<td><input type="file" name="file" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Upload" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div>
+		<ul>
+			<li th:each="file : ${flist}">
+			<script type="text/javascript">
+			$(document).ready(function() {
+			    $("a").click(function() {
+			      console.log(this.id);
+			      var url = 'getFile/?id='+this.id;
+			      console.log(url)
+			      $.get(url, function(data, status){
+			          alert("Data: " + data + "\nStatus: " + status);
+			          $('#fileArea').html( marked(data))
+			        });
+			    });
+			 });
+			</script>
+		   <a  href="#" th:id="${file.id}" th:text="${file.name}" />
+		    </li>
+		</ul>
+	</div>
+	<div id="fileArea">
+	</div>
+</body>
+</html>
